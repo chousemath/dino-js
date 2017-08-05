@@ -17,6 +17,7 @@ var gameInterval;
 var canvas = document.getElementById('myCanvas');
 // store the 2d rendering context, tool used to paint on canvas
 var ctx = canvas.getContext('2d');
+// default position of the dinosaur at beginning of game
 drawDinoResting();
 function draw() {
     // drawing code

@@ -1,30 +1,31 @@
-var originX = 40;
-var originY = 315; // 315
+let originX: number = 40;
+let originY: number = 315; // 315
 
-const zeroX = originX;
-const zeroY = originY;
+const zeroX: number = originX;
+const zeroY: number = originY;
 
-var obstacle1X = randomIntFromInterval(480, 600);
-var obstacleSpeed = 2;
+let obstacle1X: number = randomIntFromInterval(480, 600);
+let obstacleSpeed: number = 2;
 
-var unit = 3; // blocks composing the dino
+let unit: number = 3; // blocks composing the dino
+let jumpHeight: number = unit*35;
 
-var jumpHeight = unit*35;
-const upperLimitY = originY - jumpHeight; // 315
-const lowerLimitY = originY; // 315
-var cycleCounter = 0;
-var cycleCounterLimit = 3;
-var currentDinoFootingLeft;
+const upperLimitY: number = originY - jumpHeight; // 315
+const lowerLimitY: number = originY; // 315
 
-var frameRate = 15;
+let cycleCounter: number = 0;
+let cycleCounterLimit: number = 3;
+let currentDinoFootingLeft: boolean;
 
-var score = 0;
+let frameRate: number = 15;
+let score: number = 0;
+let gameInterval: any;
 
-var gameInterval;
-
-var canvas: any = document.getElementById('myCanvas');
+let canvas: any = document.getElementById('myCanvas');
 // store the 2d rendering context, tool used to paint on canvas
-var ctx = canvas.getContext('2d');
+let ctx: any = canvas.getContext('2d');
+
+// default position of the dinosaur at beginning of game
 drawDinoResting();
 
 function draw() {

@@ -28,13 +28,12 @@
     const zeroX = originX;
     const zeroY = originY;
 
-    var obstacleSize1 = unit;
     var obstacle1X = randomIntFromInterval(480, 600);
-    var obstacleSpeed = 5;
+    var obstacleSpeed = 2;
 
     var unit = 3; // blocks composing the dino
 
-    var jumpHeight = unit*20;
+    var jumpHeight = unit*35;
     const upperLimitY = originY - jumpHeight; // 315
     const lowerLimitY = originY; // 315
     var cycleCounter = 0;
@@ -65,11 +64,11 @@
         currentDinoFootingLeft = !currentDinoFootingLeft;
         cycleCounter = 0;
       }
-      if (obstacle1X < -10) {
+      if (obstacle1X < -20) {
         obstacleSize1 = randomIntFromInterval(0, 20);
         obstacle1X = randomIntFromInterval(480, 600);
         score++;
-        if (score === 10) {
+        if (score === 6) {
           performRestart();
           drawWinMessage();
         }
@@ -136,12 +135,17 @@
 
     function drawStartMessage() {
       ctx.font = "15px Arial";
-      ctx.fillText('Down-key to begin, Up-key to jump, 10 points to win!', 50, 50);
+      ctx.fillText('Down-key to begin, Up-key to jump, 6 points to win!', 50, 50);
     }
 
     function drawWinMessage() {
       ctx.font = "30px Arial";
       ctx.fillText('YOU WIN!', 100, 100);
+    }
+
+    function drawName() {
+      ctx.font = "15px Arial";
+      ctx.fillText('조셉', originX+unit*7, originY-unit*26);
     }
 
     function drawScore() {
@@ -150,8 +154,8 @@
     }
 
     function drawObstacles() {
-      ctx.rect(obstacle1X, lowerLimitY-obstacleSize1, obstacleSize1, obstacleSize1);
-      ctx.rect(obstacle1X, lowerLimitY-obstacleSize1*2, obstacleSize1, obstacleSize1);
+      ctx.font = "30px Arial";
+      ctx.fillText('최수강!', obstacle1X, lowerLimitY-15);
     }
 
     function drawDinoResting() {
@@ -193,6 +197,7 @@
       ctx.rect(originX+unit*8, originY-unit*22, unit*9, unit);
       ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
       drawObstacles();
+      drawName()
       // drawScore();
       drawStartMessage();
       ctx.fillStyle = '#000000';
@@ -240,6 +245,7 @@
       ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
       drawObstacles();
       drawScore();
+      drawName()
       ctx.fillStyle = '#000000';
       ctx.fill();
       ctx.closePath();
@@ -285,6 +291,7 @@
       ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
       drawObstacles();
       drawScore();
+      drawName()
       ctx.fillStyle = '#000000';
       ctx.fill();
       ctx.closePath();

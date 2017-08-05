@@ -25,6 +25,9 @@
     var originX = 40;
     var originY = 315; // 315
 
+    const zeroX = originX;
+    const zeroY = originY;
+
     var obstacleSize1 = unit;
     var obstacle1X = randomIntFromInterval(480, 600);
     var obstacleSpeed = 5;
@@ -67,7 +70,7 @@
         obstacle1X = randomIntFromInterval(480, 600);
         score++;
         if (score === 10) {
-          clearInterval(gameInterval);
+          performRestart();
           drawWinMessage();
         }
       } else {
@@ -75,28 +78,58 @@
       }
     }
 
+    window.addEventListener('touchstart', function() {
+      // the user touched the screen!
+      if (gameInterval) {
+        if (originY === lowerLimitY) {
+          performJump();
+        }
+      } else {
+        gameInterval = setInterval(draw, frameRate);
+      }
+    });
+
     document.onkeydown = function(e) {
       switch (e.keyCode) {
+        case 37:
+          // left arrow
+          originX -= unit*2;
+          break;
         case 38:
-          if (originY === lowerLimitY) {
-            performJump();
-          }
+          // up arrow
+          if (originY === lowerLimitY) { performJump(); }
+          break;
+        case 39:
+          // right arrow
+          originX += unit*2;
           break;
         case 40:
           // down arrow
-          gameInterval = setInterval(draw, frameRate);
+          if (gameInterval) {
+            if (confirm('Want to restart?')) { performRestart(); }
+          } else {
+            gameInterval = setInterval(draw, frameRate);
+          }
+
           break;
       }
     };
+
+    function performRestart() {
+      score = 0;
+      clearInterval(gameInterval);
+      gameInterval = null;
+      originX = zeroX;
+      originY = zeroY;
+      drawDinoResting();
+    }
 
     function performJump() {
       var i = 0, howManyTimes = 180;
       function f() {
         originY = lowerLimitY - jumpHeight * Math.sin(i * Math.PI / 180);
         i += 1;
-        if( i <= howManyTimes ){
-            setTimeout(f, 1);
-        }
+        if (i <= howManyTimes){ setTimeout(f, 1); }
       }
       f();
     }

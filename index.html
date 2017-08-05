@@ -301,6 +301,19 @@
       return Math.floor(Math.random()*(max-min+1)+min);
     }
 
+    function zoomOutMobile() {
+      var viewport = document.querySelector('meta[name="viewport"]');
+      if ( viewport ) {
+        // zooms out really far, should reveal the entire website
+        viewport.content = "initial-scale=0.1";
+        // reset the width of the viewport to size of canvas
+        viewport.content = "width=480";
+      }
+    }
+
+    // perform rescaling of website width for better mobile experience
+    zoomOutMobile();
+
   </script>
 </body>
 </html>

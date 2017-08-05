@@ -273,7 +273,7 @@ function drawDinoRight() {
   ctx.closePath();
 }
 
-function randomIntFromInterval(min, max) {
+function randomIntFromInterval(min, max): number {
   return Math.floor(Math.random()*(max-min+1)+min);
 }
 

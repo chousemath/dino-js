@@ -42,6 +42,8 @@
 
     var score = 0;
 
+    var gameInterval;
+
     var canvas = document.getElementById('myCanvas');
     // store the 2d rendering context, tool used to paint on canvas
     var ctx = canvas.getContext('2d');
@@ -63,7 +65,11 @@
       if (obstacle1X < -10) {
         obstacleSize1 = randomIntFromInterval(0, 20);
         obstacle1X = randomIntFromInterval(480, 600);
-        setTimeout(function() {score++;}, 100);
+        score++;
+        if (score === 10) {
+          clearInterval(gameInterval);
+          drawWinMessage();
+        }
       } else {
         obstacle1X -= obstacleSpeed;
       }
@@ -72,22 +78,38 @@
     document.onkeydown = function(e) {
       switch (e.keyCode) {
         case 38:
-          var i = 0, howManyTimes = 180;
-          function f() {
-            originY = lowerLimitY - jumpHeight * Math.sin(i * Math.PI / 180);
-            i += 1;
-            if( i <= howManyTimes ){
-                setTimeout(f, 1);
-            }
+          if (originY === lowerLimitY) {
+            performJump();
           }
-          f();
           break;
         case 40:
           // down arrow
-          setInterval(draw, frameRate);
+          gameInterval = setInterval(draw, frameRate);
           break;
       }
     };
+
+    function performJump() {
+      var i = 0, howManyTimes = 180;
+      function f() {
+        originY = lowerLimitY - jumpHeight * Math.sin(i * Math.PI / 180);
+        i += 1;
+        if( i <= howManyTimes ){
+            setTimeout(f, 1);
+        }
+      }
+      f();
+    }
+
+    function drawStartMessage() {
+      ctx.font = "15px Arial";
+      ctx.fillText('Down-key to begin, Up-key to jump, 10 points to win!', 50, 50);
+    }
+
+    function drawWinMessage() {
+      ctx.font = "30px Arial";
+      ctx.fillText('YOU WIN!', 100, 100);
+    }
 
     function drawScore() {
       ctx.font = "30px Arial";
@@ -138,7 +160,8 @@
       ctx.rect(originX+unit*8, originY-unit*22, unit*9, unit);
       ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
       drawObstacles();
-      drawScore();
+      // drawScore();
+      drawStartMessage();
       ctx.fillStyle = '#000000';
       ctx.fill();
       ctx.closePath();

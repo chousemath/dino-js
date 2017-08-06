@@ -2,6 +2,12 @@
 // they are also used as the anchor points from which the dinosaur is drawn
 var originX = 40;
 var originY = 315; // 315
+// starting position of the right-most heart
+var heartX = 450;
+var heartY = 45;
+var heartOffset = 38;
+// default starting health
+var health = 3;
 // zeroX and zeroY simply reference the original values of originX and originY
 // they are used to reset the position of the dinosaur
 var zeroX = originX;
@@ -130,7 +136,7 @@ function performJump() {
 }
 function drawStartMessage() {
     ctx.font = "15px Arial";
-    ctx.fillText('Down-key to begin, Up-key to jump, ' + scoreLimit + ' points to win!', 50, 50);
+    ctx.fillText('Down-key to begin, Up-key to jump, ' + scoreLimit + ' points to win!', 70, 100);
 }
 function drawWinMessage() {
     ctx.font = "30px Arial";
@@ -176,6 +182,7 @@ function drawDinoResting() {
     ctx.rect(originX + unit * 5, originY - unit * 13, unit * 4, unit);
     drawDinoHeadRight();
     drawObstacles();
+    checkAndDrawHearts();
     drawName();
     // drawScore();
     drawStartMessage();
@@ -212,6 +219,7 @@ function drawDinoLeft() {
     drawDinoHeadRight();
     drawObstacles();
     drawScore();
+    checkAndDrawHearts();
     drawName();
     ctx.fillStyle = '#000000';
     ctx.fill();
@@ -246,6 +254,7 @@ function drawDinoRight() {
     drawDinoHeadRight();
     drawObstacles();
     drawScore();
+    checkAndDrawHearts();
     drawName();
     ctx.fillStyle = '#000000';
     ctx.fill();
@@ -264,6 +273,29 @@ function drawDinoHeadRight() {
     ctx.rect(originX + unit * 6, originY - unit * 22, unit * 2, unit);
     ctx.rect(originX + unit * 8, originY - unit * 22, unit * 9, unit);
     ctx.rect(originX + unit * 7, originY - unit * 23, unit * 8, unit);
+}
+function checkAndDrawHearts() {
+    var offsetAccumulator = 0;
+    for (var i = 0; i < health; i++) {
+        drawHeart(offsetAccumulator);
+        offsetAccumulator += heartOffset;
+    }
+}
+function drawHeart(offset) {
+    if (offset === void 0) { offset = 0; }
+    // const heartX: number = 450;
+    // const heartY: number = 45;
+    ctx.rect(heartX - offset, heartY, unit, unit);
+    ctx.rect(heartX - offset - unit, heartY - unit, unit * 3, unit);
+    ctx.rect(heartX - offset - unit * 2, heartY - unit * 2, unit * 5, unit);
+    ctx.rect(heartX - offset - unit * 3, heartY - unit * 3, unit * 7, unit);
+    ctx.rect(heartX - offset - unit * 4, heartY - unit * 4, unit * 9, unit);
+    ctx.rect(heartX - offset - unit * 5, heartY - unit * 5, unit * 11, unit);
+    ctx.rect(heartX - offset - unit * 5, heartY - unit * 6, unit * 11, unit);
+    ctx.rect(heartX - offset - unit * 5, heartY - unit * 7, unit * 5, unit);
+    ctx.rect(heartX - offset + unit, heartY - unit * 7, unit * 5, unit);
+    ctx.rect(heartX - offset - unit * 4, heartY - unit * 8, unit * 3, unit);
+    ctx.rect(heartX - offset + unit * 2, heartY - unit * 8, unit * 3, unit);
 }
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);

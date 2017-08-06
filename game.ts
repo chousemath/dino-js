@@ -182,18 +182,7 @@ function drawDinoResting() {
   ctx.rect(originX+unit*3, originY-unit*12, unit*6, unit);
   ctx.rect(originX-unit*6, originY-unit*13, unit, unit);
   ctx.rect(originX+unit*5, originY-unit*13, unit*4, unit);
-  ctx.rect(originX+unit*6, originY-unit*14, unit*8, unit);
-  ctx.rect(originX+unit*6, originY-unit*15, unit*5, unit);
-  ctx.rect(originX+unit*6, originY-unit*16, unit*5, unit);
-  ctx.rect(originX+unit*6, originY-unit*17, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*18, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*19, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*20, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*21, unit*2, unit);
-  ctx.rect(originX+unit*9, originY-unit*21, unit*8, unit);
-  ctx.rect(originX+unit*6, originY-unit*22, unit*2, unit);
-  ctx.rect(originX+unit*8, originY-unit*22, unit*9, unit);
-  ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
+  drawDinoHeadRight();
   drawObstacles();
   drawName()
   // drawScore();
@@ -229,18 +218,7 @@ function drawDinoLeft() {
   ctx.rect(originX+unit*3, originY-unit*12, unit*6, unit);
   ctx.rect(originX-unit*6, originY-unit*13, unit, unit);
   ctx.rect(originX+unit*5, originY-unit*13, unit*4, unit);
-  ctx.rect(originX+unit*6, originY-unit*14, unit*8, unit);
-  ctx.rect(originX+unit*6, originY-unit*15, unit*5, unit);
-  ctx.rect(originX+unit*6, originY-unit*16, unit*5, unit);
-  ctx.rect(originX+unit*6, originY-unit*17, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*18, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*19, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*20, unit*11, unit);
-  ctx.rect(originX+unit*6, originY-unit*21, unit*2, unit);
-  ctx.rect(originX+unit*9, originY-unit*21, unit*8, unit);
-  ctx.rect(originX+unit*6, originY-unit*22, unit*2, unit);
-  ctx.rect(originX+unit*8, originY-unit*22, unit*9, unit);
-  ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
+  drawDinoHeadRight();
   drawObstacles();
   drawScore();
   drawName()
@@ -275,6 +253,16 @@ function drawDinoRight() {
   ctx.rect(originX+unit*3, originY-unit*12, unit*6, unit);
   ctx.rect(originX-unit*6, originY-unit*13, unit, unit);
   ctx.rect(originX+unit*5, originY-unit*13, unit*4, unit);
+  drawDinoHeadRight();
+  drawObstacles();
+  drawScore();
+  drawName()
+  ctx.fillStyle = '#000000';
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawDinoHeadRight() {
   ctx.rect(originX+unit*6, originY-unit*14, unit*8, unit);
   ctx.rect(originX+unit*6, originY-unit*15, unit*5, unit);
   ctx.rect(originX+unit*6, originY-unit*16, unit*5, unit);
@@ -287,12 +275,6 @@ function drawDinoRight() {
   ctx.rect(originX+unit*6, originY-unit*22, unit*2, unit);
   ctx.rect(originX+unit*8, originY-unit*22, unit*9, unit);
   ctx.rect(originX+unit*7, originY-unit*23, unit*8, unit);
-  drawObstacles();
-  drawScore();
-  drawName()
-  ctx.fillStyle = '#000000';
-  ctx.fill();
-  ctx.closePath();
 }
 
 function randomIntFromInterval(min, max): number {

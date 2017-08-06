@@ -1,19 +1,28 @@
+// originX and originY compose the starting position of the dinosaur
+// they are also used as the anchor points from which the dinosaur is drawn
 var originX = 40;
 var originY = 315; // 315
+// zeroX and zeroY simply reference the original values of originX and originY
+// they are used to reset the position of the dinosaur
 var zeroX = originX;
 var zeroY = originY;
+// this game only allows for one enemy at the moment
 var obstacle1X = randomIntFromInterval(480, 600);
 var obstacleSpeed = 2;
-var unit = 3; // blocks composing the dino
+// a `unit` is a single drawing block in this game
+// the dinosaur is drawn using these units as the basic pixel size in a way
+var unit = 3;
 var jumpHeight = unit * 35;
-var upperLimitY = originY - jumpHeight; // 315
-var lowerLimitY = originY; // 315
+// variables to control the switching between between left and right legs
 var cycleCounter = 0;
 var cycleCounterLimit = 3;
 var currentDinoFootingLeft;
-var frameRate = 15;
+// the lower the refreshDelay, the faster the frame refresh speed
+var refreshDelay = 15;
 var score = 0;
+// the gameInterval contains general game object, clear interval to stop game
 var gameInterval;
+var scoreLimit = 6;
 var canvas = document.getElementById('myCanvas');
 // store the 2d rendering context, tool used to paint on canvas
 var ctx = canvas.getContext('2d');
@@ -21,6 +30,70 @@ var ctx = canvas.getContext('2d');
 drawDinoResting();
 function draw() {
     // drawing code
+    animateDino();
+    animateObstacle();
+}
+window.addEventListener('touchstart', function () {
+    // the user touched the screen!
+    if (gameInterval) {
+        if (originY === zeroY) {
+            performJump();
+        }
+    }
+    else {
+        gameInterval = setInterval(draw, refreshDelay);
+    }
+});
+document.onkeydown = function (e) {
+    switch (e.keyCode) {
+        case 27:
+            // escape key
+            confirmReset();
+            break;
+        case 37:
+            // left arrow
+            originX -= unit * 2;
+            break;
+        case 38:
+            // up arrow
+            if (originY === zeroY) {
+                performJump();
+            }
+            break;
+        case 39:
+            // right arrow
+            originX += unit * 2;
+            break;
+        case 40:
+            // down arrow
+            confirmReset();
+            break;
+    }
+};
+function confirmReset() {
+    if (gameInterval) {
+        if (confirm('Want to restart?')) {
+            performRestart();
+        }
+    }
+    else {
+        gameInterval = setInterval(draw, refreshDelay);
+    }
+}
+function animateObstacle() {
+    if (obstacle1X < -20) {
+        obstacle1X = randomIntFromInterval(480, 600);
+        score++;
+        if (score === scoreLimit) {
+            performRestart();
+            drawWinMessage();
+        }
+    }
+    else {
+        obstacle1X -= obstacleSpeed;
+    }
+}
+function animateDino() {
     if (cycleCounter < cycleCounterLimit) {
         cycleCounter++;
     }
@@ -34,60 +107,10 @@ function draw() {
         currentDinoFootingLeft = !currentDinoFootingLeft;
         cycleCounter = 0;
     }
-    if (obstacle1X < -20) {
-        obstacle1X = randomIntFromInterval(480, 600);
-        score++;
-        if (score === 6) {
-            performRestart();
-            drawWinMessage();
-        }
-    }
-    else {
-        obstacle1X -= obstacleSpeed;
-    }
 }
-window.addEventListener('touchstart', function () {
-    // the user touched the screen!
-    if (gameInterval) {
-        if (originY === lowerLimitY) {
-            performJump();
-        }
-    }
-    else {
-        gameInterval = setInterval(draw, frameRate);
-    }
-});
-document.onkeydown = function (e) {
-    switch (e.keyCode) {
-        case 37:
-            // left arrow
-            originX -= unit * 2;
-            break;
-        case 38:
-            // up arrow
-            if (originY === lowerLimitY) {
-                performJump();
-            }
-            break;
-        case 39:
-            // right arrow
-            originX += unit * 2;
-            break;
-        case 40:
-            // down arrow
-            if (gameInterval) {
-                if (confirm('Want to restart?')) {
-                    performRestart();
-                }
-            }
-            else {
-                gameInterval = setInterval(draw, frameRate);
-            }
-            break;
-    }
-};
 function performRestart() {
     score = 0;
+    obstacle1X = randomIntFromInterval(480, 600);
     clearInterval(gameInterval);
     gameInterval = null;
     originX = zeroX;
@@ -97,7 +120,7 @@ function performRestart() {
 function performJump() {
     var i = 0, howManyTimes = 180;
     function f() {
-        originY = lowerLimitY - jumpHeight * Math.sin(i * Math.PI / 180);
+        originY = zeroY - jumpHeight * Math.sin(i * Math.PI / 180);
         i += 1;
         if (i <= howManyTimes) {
             setTimeout(f, 1);
@@ -107,7 +130,7 @@ function performJump() {
 }
 function drawStartMessage() {
     ctx.font = "15px Arial";
-    ctx.fillText('Down-key to begin, Up-key to jump, 6 points to win!', 50, 50);
+    ctx.fillText('Down-key to begin, Up-key to jump, ' + scoreLimit + ' points to win!', 50, 50);
 }
 function drawWinMessage() {
     ctx.font = "30px Arial";
@@ -123,7 +146,7 @@ function drawScore() {
 }
 function drawObstacles() {
     ctx.font = "30px Arial";
-    ctx.fillText('최수강!', obstacle1X, lowerLimitY - 15);
+    ctx.fillText('최수강!', obstacle1X, zeroY - 15);
 }
 function drawDinoResting() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
